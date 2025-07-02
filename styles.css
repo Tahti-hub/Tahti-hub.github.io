@@ -228,3 +228,13 @@ form button {
     position: absolute;
   }
 }
+.dropdown-content {
+  display: none;
+  flex-direction: column;
+  background-color: #222;
+  padding: 0.5rem;
+}
+
+.dropdown.open > .dropdown-content {
+  display: flex;
+}
