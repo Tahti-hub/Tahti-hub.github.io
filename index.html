@@ -1,71 +1,536 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UrbnWrld</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@600&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UrbnWrld</title>
+
+<!-- Fonts from Google Fonts for Y2K vibe -->
+<link href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Anika+One&family=Urbanist:wght@700&display=swap" rel="stylesheet" />
+
+<style>
+  /* Reset & basics */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    background: #000;
+    color: #fff;
+    font-family: 'Urbanist', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Container for everything */
+  #app {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* --- Header --- */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #333;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Title container */
+  .title-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  /* UrbnWrld title */
+  h1#title {
+    font-family: 'Urbanist', sans-serif;
+    font-weight: 900;
+    font-size: 3.5rem;
+    color: #fff;
+    letter-spacing: -2px;
+    user-select: none;
+    position: relative;
+  }
+
+  /* Dripping effect on title using pseudo elements */
+  h1#title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 5px;
+    width: 50%;
+    height: 10px;
+    background:
+      radial-gradient(circle at 10% 50%, #0f0 15%, transparent 16%),
+      radial-gradient(circle at 30% 40%, #0f0 15%, transparent 16%),
+      radial-gradient(circle at 50% 60%, #0f0 15%, transparent 16%);
+    background-repeat: repeat-x;
+    animation: drip 3s infinite;
+    opacity: 0.6;
+  }
+
+  @keyframes drip {
+    0%, 100% { transform: translateY(0); opacity: 0.6; }
+    50% { transform: translateY(5px); opacity: 1; }
+  }
+
+  /* Colorful Y2K star shape next to title */
+  .y2k-star {
+    width: 48px;
+    height: 48px;
+    position: relative;
+    animation: assembleStar 1.5s ease forwards;
+  }
+  /* Star pieces */
+  .y2k-star div {
+    position: absolute;
+    background: linear-gradient(45deg, #0f0, #0ff, #f90);
+    border-radius: 6px;
+    opacity: 0;
+    transform-origin: center;
+  }
+  .y2k-star div:nth-child(1) {
+    width: 10px; height: 30px;
+    top: 9px; left: 19px;
+    transform: rotate(0deg) scale(0.5);
+  }
+  .y2k-star div:nth-child(2) {
+    width: 30px; height: 10px;
+    top: 19px; left: 9px;
+    transform: rotate(0deg) scale(0.5);
+  }
+  .y2k-star div:nth-child(3) {
+    width: 10px; height: 30px;
+    top: 9px; left: 19px;
+    transform: rotate(90deg) scale(0.5);
+  }
+  .y2k-star div:nth-child(4) {
+    width: 30px; height: 10px;
+    top: 19px; left: 9px;
+    transform: rotate(90deg) scale(0.5);
+  }
+  /* Animation to assemble star */
+  @keyframes assembleStar {
+    to {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+  }
+  .y2k-star div {
+    animation: assembleStar 1.5s ease forwards;
+    animation-fill-mode: forwards;
+  }
+  .y2k-star div:nth-child(1) { animation-delay: 0.2s; }
+  .y2k-star div:nth-child(2) { animation-delay: 0.4s; }
+  .y2k-star div:nth-child(3) { animation-delay: 0.6s; }
+  .y2k-star div:nth-child(4) { animation-delay: 0.8s; }
+
+  /* --- Navigation --- */
+  nav {
+    position: relative;
+  }
+  /* Hamburger */
+  #hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+    width: 28px;
+    height: 24px;
+  }
+  #hamburger span {
+    background: white;
+    height: 3px;
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  /* Desktop nav menu */
+  ul.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul.nav-links li {
+    position: relative;
+  }
+  ul.nav-links li a, ul.nav-links li button {
+    color: white;
+    text-decoration: none;
+    font-family: 'Zen Dots', cursive;
+    font-size: 1.15rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  ul.nav-links li button:focus {
+    outline: none;
+  }
+
+  /* Dropdown styles */
+  ul.dropdown, ul.dropdown-secondary {
+    position: absolute;
+    background: #111;
+    top: 110%;
+    left: 0;
+    min-width: 160px;
+    display: none;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: 0 0 6px #0f0;
+    z-index: 20;
+  }
+  ul.dropdown li, ul.dropdown-secondary li {
+    padding: 8px 15px;
+    white-space: nowrap;
+  }
+  ul.dropdown li a, ul.dropdown-secondary li a {
+    color: white;
+    font-family: 'Anika One', cursive;
+    font-size: 1rem;
+  }
+  ul.dropdown li:hover, ul.dropdown-secondary li:hover {
+    background: #0f0;
+    color: #000;
+  }
+
+  /* Show dropdown on hover */
+  ul.nav-links li:hover > ul.dropdown {
+    display: flex;
+  }
+  ul.dropdown li:hover > ul.dropdown-secondary {
+    display: flex;
+    top: 0;
+    left: 100%;
+  }
+
+  /* Shop Now button */
+  #shopNowBtn {
+    background: linear-gradient(90deg, #00ff99, #0099ff, #ff6600);
+    border: none;
+    border-radius: 25px;
+    color: black;
+    font-weight: 700;
+    padding: 10px 25px;
+    font-family: 'Zen Dots', cursive;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  #shopNowBtn:hover {
+    filter: brightness(1.15);
+  }
+
+  /* --- Main content --- */
+  main {
+    padding: 30px 0;
+  }
+  section.products {
+    scroll-margin-top: 90px;
+  }
+  section.products h2 {
+    font-family: 'Anika One', cursive;
+    font-size: 2.3rem;
+    margin-bottom: 20px;
+    color: #0f0;
+  }
+
+  /* Product grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 18px;
+  }
+  .product-card {
+    background: #111;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 0 10px #0f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s ease;
+  }
+  .product-card:hover {
+    transform: scale(1.03);
+  }
+  .product-card img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    height: 220px;
+    margin-bottom: 12px;
+  }
+  .product-card h3 {
+    margin: 0 0 8px 0;
+    font-family: 'Zen Dots', cursive;
+    font-size: 1.3rem;
+    color: #fff;
+  }
+  .product-card p {
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1rem;
+    color: #ccc;
+    flex-grow: 1;
+  }
+  .product-card button {
+    margin-top: 12px;
+    padding: 8px 14px;
+    font-family: 'Zen Dots', cursive;
+    font-weight: 700;
+    color: black;
+    background: linear-gradient(90deg, #00ff99, #0099ff, #ff6600);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .product-card button:hover {
+    filter: brightness(1.15);
+  }
+
+  /* Scroll pointer highlight for shop now */
+  .highlight-pointer {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    border: 3px solid #00ff99;
+    border-radius: 50%;
+    animation: pointerBlink 1.5s infinite;
+    pointer-events: none;
+  }
+  @keyframes pointerBlink {
+    0%, 100% {opacity: 0.3;}
+    50% {opacity: 1;}
+  }
+
+  /* Responsive Nav */
+  @media (max-width: 900px) {
+    #hamburger {
+      display: flex;
+    }
+    ul.nav-links {
+      position: fixed;
+      top: 70px;
+      right: -100%;
+      width: 220px;
+      height: calc(100% - 70px);
+      background: #000;
+      flex-direction: column;
+      padding-top: 25px;
+      gap: 15px;
+      transition: right 0.4s ease;
+      z-index: 30;
+    }
+    ul.nav-links.open {
+      right: 0;
+    }
+    ul.nav-links li:hover > ul.dropdown {
+      display: none;
+    }
+    ul.dropdown {
+      position: static;
+      box-shadow: none;
+      border-radius: 0;
+      background: #111;
+    }
+    ul.dropdown-secondary {
+      position: static;
+      box-shadow: none;
+      background: #222;
+    }
+  }
+
+  /* --- Login/Signup Modal --- */
+  #authModal {
+    position: fixed;
+    top: 0; left: 0; right:0; bottom:0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+  #authModal.active {
+    display: flex;
+  }
+  #authBox {
+    background: #111;
+    padding: 25px 30px;
+    border-radius: 12px;
+    width: 320px;
+    color: #ddd;
+    font-family: 'Urbanist', sans-serif;
+  }
+  #authBox h2 {
+    margin-top: 0;
+    font-family: 'Zen Dots', cursive;
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: #0f0;
+    margin-bottom: 20px;
+  }
+  #authBox label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  #authBox input[type="email"],
+  #authBox input[type="password"] {
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  #authBox button {
+    width: 100%;
+    padding: 10px;
+    font-family: 'Zen Dots', cursive;
+    background: linear-gradient(90deg, #00ff99, #0099ff, #ff6600);
+    color: black;
+    font-weight: 700;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  #authBox button:hover {
+    filter: brightness(1.15);
+  }
+  #closeAuth {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #0f0;
+    cursor: pointer;
+  }
+
+  /* --- Admin Panel (hidden by default) --- */
+  #adminPanel {
+    background: #222;
+    border: 2px solid #0f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 35px;
+    display: none;
+    color: #0f0;
+  }
+  #adminPanel h2 {
+    font-family: 'Zen Dots', cursive;
+    margin-bottom: 15px;
+  }
+  #adminPanel label {
+    display: block;
+    margin-top: 12px;
+  }
+  #adminPanel input, #adminPanel textarea, #adminPanel select {
+    width: 100%;
+    padding: 7px 10px;
+    margin-top: 6px;
+    border-radius: 5px;
+    border: none;
+    font-family: 'Urbanist', sans-serif;
+    font-size: 1rem;
+  }
+  #adminPanel button {
+    margin-top: 18px;
+    padding: 10px;
+    background: #0f0;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Zen Dots', cursive;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  #adminPanel button:hover {
+    filter: brightness(1.1);
+  }
+</style>
+
 </head>
 <body>
-  <!-- Header/Nav -->
+
+<div id="app">
   <header>
-    <div class="logo">UrbnWrld ✦</div>
+    <div class="title-container">
+      <h1 id="title">UrbnWrld</h1>
+      <div class="y2k-star">
+        <div></div><div></div><div></div><div></div>
+      </div>
+    </div>
+
     <nav>
+      <div id="hamburger" aria-label="Menu" role="button" tabindex="0">
+        <span></span><span></span><span></span>
+      </div>
       <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li class="dropdown">
-          <a href="#">Products ▾</a>
-          <ul class="dropdown-menu">
-            <li><a href="#hoodies">Hoodies</a></li>
-            <li><a href="#graphic-tees">Graphic Tees</a></li>
-            <li class="dropdown-sub">
-              <a href="#">Accessories ▸</a>
-              <ul class="dropdown-submenu">
-                <li><a href="#wallet-chains">Wallet Chains</a></li>
-                <li><a href="#belts">Belts</a></li>
-                <li><a href="#jewelry">Jewelry</a></li>
-                <li><a href="#hats">Hats</a></li>
-                <li><a href="#beanies">Beanies</a></li>
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li>
+          <button id="productsBtn" aria-haspopup="true" aria-expanded="false">Products ▼</button>
+          <ul class="dropdown" id="productsDropdown" aria-label="submenu">
+            <li><a href="#hoodies" class="nav-link">Hoodies</a></li>
+            <li><a href="#graphicTees" class="nav-link">Graphic Tees</a></li>
+            <li>
+              <button class="sub-dropdown-btn" aria-haspopup="true" aria-expanded="false">Accessories ▶</button>
+              <ul class="dropdown-secondary" aria-label="submenu accessories">
+                <li><a href="#walletChains" class="nav-link">Wallet Chains</a></li>
+                <li><a href="#belts" class="nav-link">Belts</a></li>
+                <li><a href="#jewelry" class="nav-link">Jewelry</a></li>
+                <li><a href="#hats" class="nav-link">Hats</a></li>
+                <li><a href="#beanies" class="nav-link">Beanies</a></li>
               </ul>
             </li>
-            <li><a href="#pants">Pants</a></li>
-            <li><a href="#fashion-pieces">Fashion Pieces</a></li>
+            <li><a href="#pants" class="nav-link">Pants</a></li>
+            <li><a href="#fashionPieces" class="nav-link">Fashion Pieces</a></li>
           </ul>
         </li>
-        <li><a href="#" onclick="scrollToProducts()">Shop Now</a></li>
+        <li><button id="shopNowBtn">Shop Now</button></li>
+        <li><button id="loginBtn">Login / Signup</button></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1 class="main-title">UrbnWrld</h1>
-    <p class="tagline">Streetwear for all. Explore bold Y2K fashion and more.</p>
-    <button onclick="scrollToProducts()">Shop Now</button>
-  </section>
+  <main>
+    <!-- Home Section -->
+    <section id="home" style="padding-top: 50px;">
+      <h2>Welcome to UrbnWrld</h2>
+      <p style="font-family: 'Urbanist', sans-serif; font-size: 1.2rem; max-width: 800px;">
+        Buy streetwear clothes with Y2K vibes — hoodies, graphic tees, accessories, pants, and fashion pieces.  
+        Trendy, gender neutral, and fresh for everyone.
+      </p>
+    </section>
 
-  <!-- Products Section -->
-  <section id="products" class="products-grid">
-    <h2>Featured Items</h2>
-    <div class="product-card" id="hoodies">
-      <img src="https://via.placeholder.com/200" alt="Hoodie" />
-      <h3>Hoodie</h3>
-      <button>Buy</button>
-    </div>
-    <div class="product-card" id="graphic-tees">
-      <img src="https://via.placeholder.com/200" alt="Graphic Tee" />
-      <h3>Graphic Tee</h3>
-      <button>Buy</button>
-    </div>
-    <div class="product-card" id="wallet-chains">
-      <img src="https://via.placeholder.com/200" alt="Wallet Chain" />
-      <h3>Wallet Chain</h3>
-      <button>Buy</button>
-    </div>
-    <!-- Add more products using same structure -->
-  </section>
+    <!-- Products Section -->
+    <section id="products" class="products">
+      <h2>Hoodies</h2>
+      <div class="product-grid" id="hoodies">
+        <!-- Sample hoodie products -->
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1600180758899-51cc38772d88?auto=format&fit=crop&w=400&q=80" alt="Black Hoodie" />
+          <h3>Black Urban Hoodie</h3>
+          <p>Classic black hoodie with a Y2K inspired design. Cozy and stylish.</p>
+          <button class="purchase-btn" data-product="Black Urban Hoodie">Purchase</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1598966543584-57b7a43a45d8?auto=format&fit=crop&w=400&q=80" alt="Blue Hoodie" />
+          <h3>Blue Wave Hoodie</h3>
+          <p>Bright blue hoodie with a smooth streetwear vibe. Perfect for day or night.</p>
+          <button class="purchase-btn" data-product="Blue Wave Hoodie">Purchase</button>
+        </div>
+      </div>
 
-  <script src="scripts.js"></script>
-</body>
-</html>
+      <h
