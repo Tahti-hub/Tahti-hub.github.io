@@ -548,3 +548,33 @@
         const p = docSnap.data();
         html += `
           <div style="background:#
+<script>
+  // Toggle mobile menu
+  function toggleMenu() {
+    const navLinks = document.getElementById("navLinks");
+    navLinks.classList.toggle("active");
+  }
+
+  // Toggle dropdowns (main and sub)
+  function toggleDropdown(event) {
+    event.preventDefault();
+    event.stopPropagation(); // prevent bubbling
+
+    const parent = event.target.closest(".dropdown");
+    if (parent) {
+      const isOpen = parent.classList.contains("open");
+      
+      // Close any other open dropdowns first
+      document.querySelectorAll(".dropdown.open").forEach(el => {
+        if (el !== parent) el.classList.remove("open");
+      });
+
+      parent.classList.toggle("open", !isOpen);
+    }
+  }
+
+  // Close dropdown if clicked outside
+  document.addEventListener("click", function (e) {
+    document.querySelectorAll(".dropdown.open").forEach(el => el.classList.remove("open"));
+  });
+</script>
