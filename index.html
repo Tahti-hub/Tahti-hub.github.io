@@ -2,95 +2,69 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UrbnWrld</title>
-
-  <!-- Urban Jungle font from dafont (linked via CSS import) -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Dots&family=Unica+One&display=swap" />
-  
-  <style>
-    /* Urban Jungle font fallback */
-    @font-face {
-      font-family: 'UrbanJungle';
-      src: url('https://cdn.jsdelivr.net/gh/julianmulder/urban-jungle-font/UrbanJungle.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-    }
-  </style>
-  
   <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@600&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <!-- Header/Nav -->
   <header>
+    <div class="logo">UrbnWrld ✦</div>
     <nav>
-      <div class="logo">UrbnWrld</div>
-      <button id="menu-btn" aria-label="Toggle Menu">&#9776;</button>
-      <ul id="nav-links" class="hidden">
-        <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
         <li class="dropdown">
-          <a href="#" class="nav-link">Shop &#x25BC;</a>
+          <a href="#">Products ▾</a>
           <ul class="dropdown-menu">
-            <li><a href="#" class="nav-link" data-section="hoodies">Hoodies</a></li>
-            <li><a href="#" class="nav-link" data-section="shirts">Shirts</a></li>
-            <li><a href="#" class="nav-link" data-section="accessories">Accessories</a></li>
+            <li><a href="#hoodies">Hoodies</a></li>
+            <li><a href="#graphic-tees">Graphic Tees</a></li>
+            <li class="dropdown-sub">
+              <a href="#">Accessories ▸</a>
+              <ul class="dropdown-submenu">
+                <li><a href="#wallet-chains">Wallet Chains</a></li>
+                <li><a href="#belts">Belts</a></li>
+                <li><a href="#jewelry">Jewelry</a></li>
+                <li><a href="#hats">Hats</a></li>
+                <li><a href="#beanies">Beanies</a></li>
+              </ul>
+            </li>
+            <li><a href="#pants">Pants</a></li>
+            <li><a href="#fashion-pieces">Fashion Pieces</a></li>
           </ul>
         </li>
-        <li><a href="#" id="admin-toggle">Admin</a></li>
+        <li><a href="#" onclick="scrollToProducts()">Shop Now</a></li>
       </ul>
     </nav>
   </header>
 
-  <main>
-    <section id="home" class="section active">
-      <h1 class="title">UrbnWrld</h1>
-      <p class="tagline">Streetwear. Lifestyle. No filters.</p>
-      <button id="shop-now-btn" class="btn">Shop Now</button>
-    </section>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="main-title">UrbnWrld</h1>
+    <p class="tagline">Streetwear for all. Explore bold Y2K fashion and more.</p>
+    <button onclick="scrollToProducts()">Shop Now</button>
+  </section>
 
-    <section id="hoodies" class="section">
-      <h2>Hoodies</h2>
-      <div class="products-container" id="hoodies-products"></div>
-    </section>
-
-    <section id="shirts" class="section">
-      <h2>Shirts</h2>
-      <div class="products-container" id="shirts-products"></div>
-    </section>
-
-    <section id="accessories" class="section">
-      <h2>Accessories</h2>
-      <div class="products-container" id="accessories-products"></div>
-    </section>
-
-    <section id="admin-panel" class="section hidden">
-      <h2>Admin Panel</h2>
-      <form id="product-form">
-        <label>
-          Product Name: <input type="text" id="product-name" required />
-        </label><br />
-        <label>
-          Category: 
-          <select id="product-category" required>
-            <option value="">Select category</option>
-            <option value="hoodies">Hoodies</option>
-            <option value="shirts">Shirts</option>
-            <option value="accessories">Accessories</option>
-          </select>
-        </label><br />
-        <label>
-          Price (USD): <input type="number" id="product-price" step="0.01" required />
-        </label><br />
-        <label>
-          Image URL: <input type="url" id="product-image" placeholder="https://example.com/image.jpg" required />
-        </label><br />
-        <label>
-          Description:<br />
-          <textarea id="product-description" rows="3" required></textarea>
-        </label><br />
-        <button type="submit" class="btn">Add Product</button>
-      </form>
-    </section>
-  </main>
+  <!-- Products Section -->
+  <section id="products" class="products-grid">
+    <h2>Featured Items</h2>
+    <div class="product-card" id="hoodies">
+      <img src="https://via.placeholder.com/200" alt="Hoodie" />
+      <h3>Hoodie</h3>
+      <button>Buy</button>
+    </div>
+    <div class="product-card" id="graphic-tees">
+      <img src="https://via.placeholder.com/200" alt="Graphic Tee" />
+      <h3>Graphic Tee</h3>
+      <button>Buy</button>
+    </div>
+    <div class="product-card" id="wallet-chains">
+      <img src="https://via.placeholder.com/200" alt="Wallet Chain" />
+      <h3>Wallet Chain</h3>
+      <button>Buy</button>
+    </div>
+    <!-- Add more products using same structure -->
+  </section>
 
   <script src="scripts.js"></script>
 </body>
