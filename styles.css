@@ -1,127 +1,230 @@
-/* --------- GLOBAL & FONTS --------- */
+/* -------- RESET & BASE -------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
-  margin: 0; padding: 0;
-  background: #000;
-  color: #fff;
-  font-family: 'Unica One','Zen Dots',sans-serif;
+  background-color: black;
+  color: white;
+  font-family: 'Bebas Neue', sans-serif;
   overflow-x: hidden;
 }
 
-/* --------- LOADER CROSS PIECES --------- */
-#loader {
-  position: fixed; top:0; left:0; width:100%; height:100%;
-  background:#000; z-index:10000;
-  display:flex; align-items:center; justify-content:center;
-}
-.piece {
-  position:absolute;
-  background:transparent;
-  width:120px; height:20px;
-}
-.p1 { background:#0f0; transform:translate(-200px,0) rotate(0); animation:slide-in 0.8s ease-out forwards 0.2s;}
-.p2 { background:#0ff; transform:translate(200px,0) rotate(0); animation:slide-in 0.8s ease-out forwards 0.4s;}
-.p3 { background:#f80; transform:translate(0,-200px) rotate(90deg); animation:slide-in 0.8s ease-out forwards 0.6s;}
-.p4 { background:#f0f; transform:translate(0,200px) rotate(90deg); animation:slide-in 0.8s ease-out forwards 0.8s;}
-@keyframes slide-in {
-  to { transform: translate(0,0) rotate(var(--rot,0)); }
-}
-
-/* --------- HEADER & NAV --------- */
+/* -------- HEADER & TITLE -------- */
 header {
-  position:fixed; top:0; width:100%; z-index:999;
-  background:rgba(0,0,0,0.8); padding:15px 20px;
-  display:flex; align-items:center; justify-content:space-between;
+  padding: 2rem 1rem 1rem;
+  text-align: center;
+  font-size: 3.2rem;
 }
-.logo {
-  font-family:'UrbanJungle',sans-serif;
-  font-size:2.5rem; color:#fff;
-  text-shadow:0 0 8px #0f0;
-}
-#menu-btn {
-  display:none; font-size:2rem; background:none; border:none; color:#fff; cursor:pointer;
-}
-nav ul {
-  list-style:none; display:flex; margin:0; padding:0;
-}
-nav ul li { position:relative; margin-left:20px; }
-nav a {
-  color:#fff; text-decoration:none; font-weight:600; font-size:1rem;
-  transition: color .2s;
-}
-nav a:hover { color:#0f0; }
-
-/* Dropdowns */
-.dropdown-menu {
-  display:none; position:absolute; top:120%; left:0;
-  background:#111; border:1px solid #333; border-radius:4px;
-  min-width:140px; z-index:1000;
-}
-.dropdown:hover > .dropdown-menu { display:block; }
-.dropdown-menu li { margin:0; }
-.dropdown-menu a { display:block; padding:8px 12px; }
-
-/* Mobile */
-@media(max-width:768px) {
-  #menu-btn { display:block; }
-  nav ul { display:none; flex-direction:column; background:#111; position:absolute; top:60px; right:0; width:200px; }
-  nav ul.show { display:flex; }
-  .dropdown:hover>.dropdown-menu { display:none; }
-  .dropdown-menu.sub { padding-left:10px; }
-}
-
-/* --------- LOADER FADE & MAIN LAUNCH --------- */
-.loaded #loader { animation:fadeout 0.5s ease-out forwards 1.2s; }
-@keyframes fadeout { to{ opacity:0; visibility:hidden; } }
-.loaded main, .loaded header { opacity:1; transform:none; transition:opacity .5s .8s,transform .5s .8s; }
-main, header { opacity:0; transform:translateY(20px); }
-
-/* --------- HOME SECTION --------- */
-.section { padding:100px 20px; max-width:1200px; margin:0 auto; display:none; }
-.section.active { display:block; }
 .title {
-  font-family:'UrbanJungle',sans-serif;
-  font-size:4rem; margin-top:80px;
+  display: inline-block;
+  color: white;
+  font-size: 3.5rem;
+  letter-spacing: 2px;
+  position: relative;
 }
-#y2k-cross {
-  position:relative; width:0; height:0; margin:20px auto 10px;
+.title::after {
+  content: '';
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, green, blue, orange);
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  animation: drip 2s infinite;
 }
-.bar {
-  position:absolute; background:#fff; border-radius:4px;
-  box-shadow:0 0 12px rgba(255,255,255,0.5);
+@keyframes drip {
+  0%, 100% { height: 5px; }
+  50% { height: 15px; }
 }
-.horizontal { width:200px; height:20px; left:-100px; top:0; }
-.vertical { width:20px; height:200px; left:-10px; top:-100px; }
 
-.tagline { font-size:1.2rem; margin:10px 0 30px; color:#ccc; }
-.btn {
-  background:#0f0; color:#000; border:none; padding:12px 30px;
-  font-size:1.1rem; font-weight:700; border-radius:6px;
-  cursor:pointer; transition:background .3s, box-shadow .3s;
+/* -------- NAVIGATION -------- */
+nav {
+  background-color: #111;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
-.btn:hover { background:#fff; box-shadow:0 0 12px #0f0; }
+.nav-logo {
+  font-size: 1.5rem;
+  color: white;
+}
+.menu-toggle {
+  display: block;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+.nav-links {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  background-color: #111;
+}
+.nav-links.active {
+  display: flex;
+}
+.nav-links a,
+.nav-links button {
+  text-decoration: none;
+  color: white;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  text-align: left;
+}
 
-/* --------- PRODUCTS --------- */
-.products-container {
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:30px;
-  margin-top:20px;
+/* -------- DROPDOWNS -------- */
+.dropdown-content,
+.sub-dropdown {
+  display: none;
+  flex-direction: column;
+  background-color: #222;
+  margin-left: 1rem;
 }
-.product-card {
-  background:#111; border:2px solid #333; border-radius:6px;
-  padding:15px; text-align:center; transition:border-color .3s;
+.dropdown.open > .dropdown-content {
+  display: flex;
 }
-.product-card:hover { border-color:#0f0; }
-.product-image { width:100%; height:160px; object-fit:cover; border-radius:4px; }
-.product-name { font-family:'Zen Dots',sans-serif; font-size:1.3rem; margin:10px 0; }
-.product-price { font-family:'Unica One',sans-serif; font-size:1.1rem; color:#0f0; margin-bottom:8px; }
-.product-description { font-size:0.9rem; color:#aaa; margin-bottom:12px; }
-.purchase-btn {
-  background:#08f; color:#fff; border:none; padding:8px 20px; border-radius:4px;
-  cursor:pointer; transition:background .3s;
+.dropdown-content .dropdown.open > .sub-dropdown {
+  display: flex;
 }
-.purchase-btn:hover { background:#0cf; }
 
-/* --------- ADMIN PANEL --------- */
-#admin-panel label { display:block; margin:12px 0 4px; font-weight:600; }
-#admin-panel input, #admin-panel select, #admin-panel textarea {
-  width:100%; padding:8px; border:1px solid #333; border-radius:4px; background:#111; color:#fff;
+/* -------- SHOP NOW BUTTON -------- */
+#shop-now {
+  background: white;
+  color: black;
+  padding: 1rem 2rem;
+  border: none;
+  margin: 2rem auto;
+  display: block;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+
+/* -------- PRODUCTS SECTION -------- */
+.products {
+  padding: 2rem;
+}
+.products h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+#products-listing {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* -------- ADMIN PANEL -------- */
+.admin-panel {
+  display: none;
+  padding: 2rem;
+  background-color: #111;
+  border-top: 1px solid #444;
+}
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+form input, form textarea, form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  border: none;
+  background: #222;
+  color: white;
+}
+form button {
+  padding: 1rem 2rem;
+  background: white;
+  color: black;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* -------- AUTH MODAL -------- */
+#auth-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+#auth-modal.active {
+  display: flex;
+}
+#auth-modal > div {
+  background: #111;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  color: white;
+  position: relative;
+}
+#auth-modal input {
+  width: 100%;
+  padding: 0.7rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 4px;
+}
+#auth-modal .close-btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* -------- RESPONSIVE NAV -------- */
+@media (min-width: 600px) {
+  .nav-links {
+    display: flex !important;
+    flex-direction: row;
+    width: auto;
+    background: none;
+  }
+  .nav-links a,
+  .nav-links button {
+    padding: 0 1rem;
+  }
+  .menu-toggle {
+    display: none;
+  }
+  .dropdown-content,
+  .sub-dropdown {
+    position: absolute;
+    background: #222;
+    margin-left: 0;
+    padding: 0.5rem 0;
+    border-radius: 0 0 6px 6px;
+    z-index: 1000;
+  }
+  .dropdown-content a,
+  .sub-dropdown a {
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+  }
+  .dropdown {
+    position: relative;
+  }
+  .dropdown:hover > .dropdown-content {
+    display: flex;
+  }
+  .dropdown-content .dropdown:hover > .sub-dropdown {
+    display: flex;
+    left: 100%;
+    top: 0;
+    position: absolute;
+  }
 }
